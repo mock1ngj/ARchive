@@ -4,7 +4,7 @@ import 'mind-ar/dist/mindar-image-aframe.prod.js';
 import { FaQuestionCircle } from "react-icons/fa";
 import { FaPlayCircle } from "react-icons/fa";
 import { IconContext } from 'react-icons';
-import { showArtifact } from '../main';
+import { showArtifact } from '../../js/showArtifact';
 
 export default ({ page }) => {
     const sceneRef = useRef(null);
