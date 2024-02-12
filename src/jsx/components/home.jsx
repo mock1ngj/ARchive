@@ -1,10 +1,9 @@
-import logo from "/logo.png";
 import '../../css/app.css';
 export default ({ page }) => {
     return (
         <>
             <div style={{margin:"4vi", marginTop:"10vh"}}>
-                <img src={logo} className="logo"/>
+                <img src="http://192.168.1.152:8000/api/archive/asset/logo.png" className="logo"/>
             </div>
             <div >
                 <div >

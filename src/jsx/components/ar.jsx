@@ -5,6 +5,7 @@ import { FaQuestionCircle } from "react-icons/fa";
 import { FaPlayCircle } from "react-icons/fa";
 import { IconContext } from 'react-icons';
 import { showArtifact } from '../../js/showArtifact';
+import Assets from '../ar-components/assets';
 
 export default ({ page }) => {
     const sceneRef = useRef(null);
@@ -79,9 +80,7 @@ export default ({ page }) => {
                 <a-assets>
                     <img id="next" src="/ar-ui/next.png" />
                     <img id="prev" src="/ar-ui/prev.png" />
-                    <img id="petey" src="/ar-ui/petey.jpg" />
-                    <img id="katniss" src="/ar-ui/katniss.jpg" />
-                    <img id="logo" src="/ar-ui/logo.jpg" />
+                    <Assets></Assets>
                 </a-assets>
 
                 <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;" raycaster="far: ${customFields.libVersion}; objects: .clickable"></a-camera>
@@ -90,7 +89,7 @@ export default ({ page }) => {
                     <a-entity position="0 0 0">
                         <a-plane color="#4E9F3D" height="0.552" width="1"></a-plane>
                         <a-entity visible={artifact[0]}>
-                            <a-image src="#katniss"
+                            <a-image src="#1"
                                 height="0.4"
                                 width="0.4"
                                 position="-0.24 0 0.1">
@@ -102,14 +101,14 @@ export default ({ page }) => {
                             </a-entity>
                         </a-entity>
                         <a-entity visible={artifact[1]}>
-                            <a-image src="#petey"
+                            <a-image src="#1"
                                 height="0.4"
                                 width="0.4"
                                 position="-0.24 0 0.1">
                             </a-image>
                         </a-entity>
                         <a-entity visible={artifact[2]}>
-                            <a-image src="#logo"
+                            <a-image src="#2"
                                 height="0.4"
                                 width="0.4"
                                 position="-0.24 0 0.1">
