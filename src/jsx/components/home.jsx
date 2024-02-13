@@ -1,9 +1,11 @@
+import { url } from '../../js/main';
 import '../../css/app.css';
+
 export default ({ page }) => {
     return (
         <>
             <div style={{margin:"4vi", marginTop:"10vh"}}>
-                <img src="http://192.168.1.152:8000/api/archive/asset/logo.png" className="logo"/>
+                <img src={`${url}/api/archive/asset/logo.png`} className="logo"/>
             </div>
             <div >
                 <div >

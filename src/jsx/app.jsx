@@ -10,11 +10,15 @@ export default () => {
     }, [page])
     return (
         <>
-            {page == "home" ? (<Home page={setPage} />) :
-                (<div style={{ position: "relative", height: "100vh", width: "100vw", overflow: "hidden", }} >
-                    <AR page={setPage} />
-                    <video></video>
-                </div>)
+            {page == "home" ?
+                (
+                    <Home page={setPage} />
+                ) : (
+                    <div style={{ position: "relative", height: "100vh", width: "100vw", overflow: "hidden", }} >
+                        <AR page={setPage} />
+                        <video></video>
+                    </div>
+                )
             }
         </>
     )
