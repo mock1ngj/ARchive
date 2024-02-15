@@ -1,19 +1,6 @@
-import { useEffect, useState } from "react";
-import { removeExtension, request } from "../../js/main"
+import { removeExtension } from "../../js/main"
 
-
-/* const artifacts = [{ name: 'test', image: '1.png' }, { name: 'test2', image: '2.png' }, { name: 'test3', image: '3.jpg' }];
- */
-export default ({ section }) => {
-    const [artifacts, setArtifact] = useState([]);
-    useEffect(()=>{
-        const getArtifacts = async () => {
-            const response = await request.artifact(section)
-            setArtifact(response);
-        }
-        getArtifacts();
-        console.log(artifacts); 
-    },[]);
+export default ({ artifacts }) => {
     return (
         <a-entity position="0 0 0">
             <a-plane color="#4E9F3D" height="0.552" width="1"></a-plane>

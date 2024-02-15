@@ -2,14 +2,19 @@ import React, { useEffect, useState } from "react";
 
 import Home from "./components/home";
 import AR from "./components/ar";
+import { request, ArtifactContext } from "../js/main";
+
+//request the necessary data
+const data = await request.section();
 
 export default () => {
+
     const [page, setPage] = useState('home');
     useEffect(() => {
         console.log(page);
     }, [page])
     return (
-        <>
+        <ArtifactContext.Provider value={data}>
             {page == "home" ?
                 (
                     <Home page={setPage} />
@@ -20,7 +25,7 @@ export default () => {
                     </div>
                 )
             }
-        </>
+        </ArtifactContext.Provider>
     )
 }
 

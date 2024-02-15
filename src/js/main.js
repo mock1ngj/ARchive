@@ -1,3 +1,4 @@
+import { createContext } from "react";
 import { http } from "./http.js";
 import { showArtifact } from "./showArtifact.js";
 
@@ -6,6 +7,7 @@ const local = 'https://iccemapi.dev';
 export const url = local;
 export const request = new http(local);
 export const artifact = new showArtifact();
+export const ArtifactContext = createContext();
 
 const synth = window.speechSynthesis;
 
