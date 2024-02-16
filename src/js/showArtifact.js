@@ -20,9 +20,3 @@ export class showArtifact {
         return array;
     }
 }
-
-const artifact = new showArtifact();
-var art = artifact.show([true, false, false], 2);
-console.log(art);
-art = artifact.reset(art);
-console.log(art);

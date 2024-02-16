@@ -32,7 +32,6 @@ export default ({ page }) => {
             setArtifactSection(temp);
         });
 
-        //TODO: retrieve the number of artifacts per section
         setCtr((ctr) => ctr != 2 ? ctr + 1 : ctr = 0);
         const nextArtifact = showArt(artifact);
 
@@ -68,18 +67,17 @@ export default ({ page }) => {
                     <FaQuestionCircle onClick={() => { page('home') }}></FaQuestionCircle>
                 </div>
             </IconContext.Provider>
-            <IconContext.Provider value={{ color: "#4e9f3d", className: "play-button" }}>
+{/*             <IconContext.Provider value={{ color: "#4e9f3d", className: "play-button" }}>
                 <div style={{ position: 'absolute', bottom: '20vh', width: '100%', zIndex: 1000 }}>
                     <FaPlayCircle onClick={() => speech()}></FaPlayCircle>
                 </div>
-            </IconContext.Provider>
+            </IconContext.Provider> */}
             <a-scene ref={sceneRef} mindar-image={`filterMinCF:5; filterBeta:2000; imageTargetSrc: ${url}/api/archive/file/targets.mind; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;`} color-space="sRGB" embedded renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
                 <a-assets>
                     <img id="next" src="/ar-ui/next.png" />
                     <img id="prev" src="/ar-ui/prev.png" />
                     <Assets></Assets>
                 </a-assets>
-
                 <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;" raycaster="far: ${customFields.libVersion}; objects: .clickable"></a-camera>
                 <Section></Section>
             </a-scene>

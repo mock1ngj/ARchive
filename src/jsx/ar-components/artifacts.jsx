@@ -1,6 +1,59 @@
-import { removeExtension } from "../../js/main"
+import { ArtifactContext, removeExtension, primer } from "../../js/main"
+import { useContext, useEffect, useRef, useState } from "react";
 
-export default ({ artifacts }) => {
+/*
+*Dont use values greater than 1 for the height and width since it will
+*overflow or even 1 but 1 might be doable depending on the distance of the user
+*/
+
+export default ({ artifacts, section }) => {
+    const data = useContext(ArtifactContext);
+    const clickable = useRef(null);
+    const [visible, setVisible] = useState(primer(data));
+    const [test, setTest] = useState([true, false]);
+    /*
+    * Updates visibility depending on the section and saves the last visible artifact 
+    */
+    const next = (section) => {
+        let newVisible = visible;
+        let artifacts = visible[section].artifacts;
+        let counter = newVisible[section].counter;
+
+        counter > artifacts.length-1 ? counter = 0 : counter++;
+        console.log(counter);
+        artifacts.forEach((value, index) => {
+            if (value)
+                artifacts[index] = false;
+            if (index == counter)
+                artifacts[index] = true;
+        });
+        newVisible[section].counter = counter;
+        newVisible[section].artifacts = artifacts;
+        setTest(artifacts);
+        setVisible(newVisible);
+        console.log(visible);
+    }
+
+    const prev = (section) => {
+        let newVisible = visible;
+        let artifacts = visible[section].artifacts;
+        let counter = newVisible[section].counter;
+
+        counter > 0 ? counter-- : counter = artifacts.length-1;
+        console.log(counter);
+        artifacts.forEach((value, index) => {
+            if (value)
+                artifacts[index] = false;
+            if (index == counter)
+                artifacts[index] = true;
+        });
+        newVisible[section].counter = counter;
+        newVisible[section].artifacts = artifacts;
+        setTest(artifacts);
+        setVisible(newVisible);
+        console.log(visible);
+    }
+
     return (
         <a-entity position="0 0 0">
             <a-plane color="#4E9F3D" height="0.552" width="1"></a-plane>
@@ -9,34 +62,24 @@ export default ({ artifacts }) => {
                     <></>
                 ) :
                 (
-                    <Artifacts artifacts={artifacts}></Artifacts>
+                    artifacts.map((artifact, i) => (
+                        <a-entity data-test={test[i]} visible={test[i]} key={i}>
+                            <a-image src={`#${removeExtension(artifact.image)}`}
+                                height="0.4"
+                                width="0.4"
+                                position="-0.24 0 0.1">
+                            </a-image>
+                            <a-entity geometry="primitive:plane; height: 0; width: 0.2;"
+                                text={`value:${artifact.name}; align:center; color: black;`}
+                                position="0.24 0 0.1"
+                                material="color: white">
+                            </a-entity>
+                        </a-entity>
+                    ))
                 )
             }
+            <a-image class="clickable" onClick={() => next(section)} src="#next" position="0.6 0 0" height="0.125" width="0.125" rotation="0 0 0"></a-image>
+            <a-image class="clickable" onClick={() => prev(section)} src="#prev" position="-0.6 0 0" height="0.125" width="0.125" rotation="0 0 0"></a-image>
         </a-entity>
     )
 }
-
-
-/*
-*Dont use values greater than 1 for the height and width since it will
-*overflow or even 1 but 1 might be doable depending on the distance of the user
-*/
-const Artifacts = ({ artifacts }) => {
-    return (
-        artifacts.map((artifact, i) => (
-            <a-entity visible={i == 0 ? 'true' : 'false'} key={i}>
-                <a-image src={`#${removeExtension(artifact.image)}`}
-                    height="0.4"
-                    width="0.4"
-                    position="-0.24 0 0.1">
-                </a-image>
-                <a-entity geometry="primitive:plane; height: 0; width: 0.2;"
-                    text={`value:${artifact.name}; align:center; color: black;`}
-                    position="0.24 0 0.1"
-                    material="color: white">
-                </a-entity>
-            </a-entity>
-        ))
-    )
-}
-

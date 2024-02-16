@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import Home from "./components/home";
 import AR from "./components/ar";
@@ -10,9 +10,6 @@ const data = await request.section();
 export default () => {
 
     const [page, setPage] = useState('home');
-    useEffect(() => {
-        console.log(page);
-    }, [page])
     return (
         <ArtifactContext.Provider value={data}>
             {page == "home" ?

@@ -14,8 +14,7 @@ export default () => {
             assets.push(artifact.image);
         });
     });
-
-    console.log(assets);
+    
     return (
         assets.map((asset, i) => (
             <img id={removeExtension(asset)} src={`${url}/api/archive/asset/${asset}`} crossOrigin="anonymous" key={i}></img>
