@@ -15,41 +15,33 @@ export default ({ artifacts, section }) => {
     * Updates visibility depending on the section and saves the last visible artifact 
     */
     const next = (section) => {
-        let newVisible = visible;
-        let artifacts = visible[section].artifacts;
-        let counter = newVisible[section].counter;
-
-        counter > artifacts.length-1 ? counter = 0 : counter++;
-        console.log(counter);
-        artifacts.forEach((value, index) => {
+        let newVisible = [...visible];
+        let sectionVisible = { ...newVisible[section] };
+        sectionVisible.counter == sectionVisible.artifacts.length - 1 ? sectionVisible.counter = 0 : sectionVisible.counter++;
+        sectionVisible.artifacts.forEach((value, index) => {
             if (value)
-                artifacts[index] = false;
-            if (index == counter)
-                artifacts[index] = true;
+                sectionVisible.artifacts[index] = false;
+            if (index == sectionVisible.counter)
+                sectionVisible.artifacts[index] = true;
         });
-        newVisible[section].counter = counter;
-        newVisible[section].artifacts = artifacts;
-        setTest(artifacts);
+        newVisible[section] = sectionVisible;
         setVisible(newVisible);
         console.log(visible);
     }
 
     const prev = (section) => {
-        let newVisible = visible;
-        let artifacts = visible[section].artifacts;
-        let counter = newVisible[section].counter;
-
-        counter > 0 ? counter-- : counter = artifacts.length-1;
-        console.log(counter);
-        artifacts.forEach((value, index) => {
+        let newVisible = [...visible];
+        let sectionVisible = { ...newVisible[section] };
+        console.log(`Before:${sectionVisible.counter}`);
+        sectionVisible.counter == 0 ? sectionVisible.counter = sectionVisible.artifacts.length - 1 : sectionVisible.counter--;
+        console.log(`After:${sectionVisible.counter}`);
+        sectionVisible.artifacts.forEach((value, index) => {
             if (value)
-                artifacts[index] = false;
-            if (index == counter)
-                artifacts[index] = true;
+                sectionVisible.artifacts[index] = false;
+            if (index == sectionVisible.counter)
+                sectionVisible.artifacts[index] = true;
         });
-        newVisible[section].counter = counter;
-        newVisible[section].artifacts = artifacts;
-        setTest(artifacts);
+        newVisible[section] = sectionVisible;
         setVisible(newVisible);
         console.log(visible);
     }
@@ -63,7 +55,7 @@ export default ({ artifacts, section }) => {
                 ) :
                 (
                     artifacts.map((artifact, i) => (
-                        <a-entity data-test={test[i]} visible={test[i]} key={i}>
+                        <a-entity data-test={visible[section].artifacts[i]} visible={visible[section].artifacts[i]} key={i}>
                             <a-image src={`#${removeExtension(artifact.image)}`}
                                 height="0.4"
                                 width="0.4"
