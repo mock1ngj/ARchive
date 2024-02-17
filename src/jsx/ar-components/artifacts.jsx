@@ -1,5 +1,5 @@
 import { ArtifactContext, removeExtension, primer } from "../../js/main"
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 
 /*
 *Dont use values greater than 1 for the height and width since it will
@@ -10,7 +10,6 @@ export default ({ artifacts, section }) => {
     const data = useContext(ArtifactContext);
     const clickable = useRef(null);
     const [visible, setVisible] = useState(primer(data));
-    const [test, setTest] = useState([true, false]);
     /*
     * Updates visibility depending on the section and saves the last visible artifact 
     */
@@ -32,9 +31,7 @@ export default ({ artifacts, section }) => {
     const prev = (section) => {
         let newVisible = [...visible];
         let sectionVisible = { ...newVisible[section] };
-        console.log(`Before:${sectionVisible.counter}`);
         sectionVisible.counter == 0 ? sectionVisible.counter = sectionVisible.artifacts.length - 1 : sectionVisible.counter--;
-        console.log(`After:${sectionVisible.counter}`);
         sectionVisible.artifacts.forEach((value, index) => {
             if (value)
                 sectionVisible.artifacts[index] = false;
@@ -61,6 +58,7 @@ export default ({ artifacts, section }) => {
                                 width="0.4"
                                 position="-0.24 0 0.1">
                             </a-image>
+                            
                             <a-entity geometry="primitive:plane; height: 0; width: 0.2;"
                                 text={`value:${artifact.name}; align:center; color: black;`}
                                 position="0.24 0 0.1"
