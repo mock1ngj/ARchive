@@ -25,7 +25,6 @@ export default ({ artifacts, section }) => {
         });
         newVisible[section] = sectionVisible;
         setVisible(newVisible);
-        console.log(visible);
     }
 
     const prev = (section) => {
@@ -40,7 +39,6 @@ export default ({ artifacts, section }) => {
         });
         newVisible[section] = sectionVisible;
         setVisible(newVisible);
-        console.log(visible);
     }
 
     return (
@@ -58,7 +56,12 @@ export default ({ artifacts, section }) => {
                                 width="0.4"
                                 position="-0.24 0 0.1">
                             </a-image>
-                            
+                            <a-image class="clickable"
+                                onClick={() => { console.log(`play${i}`); }}
+                                src="#play"
+                                height="0.4"
+                                width="0.4"
+                                position="-0.24 0 0.11"></a-image>
                             <a-entity geometry="primitive:plane; height: 0; width: 0.2;"
                                 text={`value:${artifact.name}; align:center; color: black;`}
                                 position="0.24 0 0.1"
@@ -68,8 +71,21 @@ export default ({ artifacts, section }) => {
                     ))
                 )
             }
-            <a-image class="clickable" onClick={() => next(section)} src="#next" position="0.6 0 0" height="0.125" width="0.125" rotation="0 0 0"></a-image>
-            <a-image class="clickable" onClick={() => prev(section)} src="#prev" position="-0.6 0 0" height="0.125" width="0.125" rotation="0 0 0"></a-image>
+            <a-image class="clickable"
+                onClick={() => next(section)}
+                src="#next"
+                position="0.6 0 0"
+                height="0.125"
+                width="0.125">
+            </a-image>
+            <a-image
+                class="clickable"
+                onClick={() => prev(section)}
+                src="#prev"
+                position="-0.6 0 0"
+                height="0.125"
+                width="0.125">
+            </a-image>
         </a-entity>
     )
 }

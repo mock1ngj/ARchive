@@ -1,6 +1,6 @@
 import { useContext} from "react";
 import { ArtifactContext } from "../../js/main";
-import Artifacts from "./artifacts";
+import Artifacts from "./Artifacts";
 
 export default () => {
     const sections = useContext(ArtifactContext);

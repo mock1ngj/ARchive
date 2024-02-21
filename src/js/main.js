@@ -1,12 +1,10 @@
 import { createContext } from "react";
 import { http } from "./http.js";
-import { showArtifact } from "./showArtifact.js";
 
 const ngrok = 'https://8fea-49-151-192-198.ngrok-free.app';
 const local = 'https://iccemapi.dev';
 export const url = local;
 export const request = new http(local);
-export const artifact = new showArtifact();
 export const ArtifactContext = createContext();
 
 const synth = window.speechSynthesis;

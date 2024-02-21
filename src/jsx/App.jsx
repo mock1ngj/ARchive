@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-
-import Home from "./components/home";
-import AR from "./components/ar";
+import Home from "./components/Home";
+import AR from "./components/Ar";
 import { request, ArtifactContext } from "../js/main";
 
 //request the necessary data
