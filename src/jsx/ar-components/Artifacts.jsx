@@ -50,7 +50,7 @@ export default ({ artifacts, section }) => {
                 ) :
                 (
                     artifacts.map((artifact, i) => (
-                        <a-entity data-test={visible[section].artifacts[i]} visible={visible[section].artifacts[i]} key={i}>
+                        <a-entity visible={visible[section].artifacts[i]} key={i}>
                             <a-image src={`#${removeExtension(artifact.image)}`}
                                 height="0.4"
                                 width="0.4"
