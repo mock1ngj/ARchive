@@ -1,6 +1,7 @@
-import { ArtifactContext, removeExtension, primer } from "../../js/main"
-import { useContext, useRef, useState } from "react";
-
+import { ArtifactContext, removeExtension, primer, text2speech } from "../../js/main"
+import { useContext, useState } from "react";
+import bold from "/fonts/Roboto-Bold-msdf.json?url"
+import light from "/fonts/Roboto-Regular-msdf.json?url"
 /*
 *Dont use values greater than 1 for the height and width since it will
 *overflow or even 1 but 1 might be doable depending on the distance of the user
@@ -8,8 +9,8 @@ import { useContext, useRef, useState } from "react";
 
 export default ({ artifacts, section }) => {
     const data = useContext(ArtifactContext);
-    const clickable = useRef(null);
     const [visible, setVisible] = useState(primer(data));
+
     /*
     * Updates visibility depending on the section and saves the last visible artifact 
     */
@@ -43,38 +44,33 @@ export default ({ artifacts, section }) => {
 
     return (
         <a-entity position="0 0 0">
-            <a-plane color="#4E9F3D" height="0.552" width="1"></a-plane>
-            {artifacts.length == 0 ?
-                (
-                    <></>
-                ) :
-                (
-                    artifacts.map((artifact, i) => (
-                        <a-entity visible={visible[section].artifacts[i]} key={i}>
-                            <a-image src={`#${removeExtension(artifact.image)}`}
-                                height="0.4"
-                                width="0.4"
-                                position="-0.24 0 0.1">
-                            </a-image>
-                            <a-image class="clickable"
-                                onClick={() => { console.log(`play${i}`); }}
-                                src="#play"
-                                height="0.4"
-                                width="0.4"
-                                position="-0.24 0 0.11"></a-image>
-                            <a-entity geometry="primitive:plane; height: 0; width: 0.2;"
-                                text={`value:${artifact.name}; align:center; color: black;`}
-                                position="0.24 0 0.1"
-                                material="color: white">
-                            </a-entity>
+            {
+                artifacts.map((artifact, i) => (
+                    <a-entity visible={visible[section].artifacts[i]} key={i}>
+                        <a-image src={`#${removeExtension(artifact.image)}`}
+                            height="0.4"
+                            width="0.4"
+                            position="-0.14 0 0.1">
+                        </a-image>
+                        <a-image class="clickable"
+                            onClick={() => { text2speech.play('testing class') }}
+                            src="#play"
+                            height="0.4"
+                            width="0.4"
+                            position="-0.14 0 0.11">
+                        </a-image>
+                        <a-entity position="0.24 0 0.1"
+                            geometry="primitive: plane; color: black; width: 0; height: 0.4;"
+                            material="opacity: 0.5; transparent: true"
+                            text={`text:${artifact.name}; align: center; color: white;`}>
                         </a-entity>
-                    ))
-                )
+                    </a-entity>
+                ))
             }
             <a-image class="clickable"
                 onClick={() => next(section)}
                 src="#next"
-                position="0.6 0 0"
+                position="0.5 0 0"
                 height="0.125"
                 width="0.125">
             </a-image>
@@ -82,7 +78,7 @@ export default ({ artifacts, section }) => {
                 class="clickable"
                 onClick={() => prev(section)}
                 src="#prev"
-                position="-0.6 0 0"
+                position="-0.5 0 0"
                 height="0.125"
                 width="0.125">
             </a-image>

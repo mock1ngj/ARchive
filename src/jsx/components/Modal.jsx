@@ -1,19 +1,15 @@
-import { useEffect, useState } from "react"
+import Agreement from "./ModalContents/Agreement";
+import Survey from "./ModalContents/FormAgreement";
 
-export default ({state}) => {
-    const [display, setDisplay] = useState();
-
-    useEffect(()=>{
-        setDisplay(state);
-    }, [state])
+export default ({state, setModal, content}) => {
 
     return (
-        <div className="modal" style={{display: display}}>
+        <div className="modal" style={{display: state}}>
             <div className="modal-content">
                 <div className="modal-header">
                     <button type="button"
                         style={{justifyContent:"center", alignItems:"center", border:"none", background:"none", cursor:"pointer"}}
-                        onClick={() => setDisplay('none')}>
+                        onClick={() => setModal('none')}>
                         <svg className="flex-shrink:0"
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -29,17 +25,12 @@ export default ({state}) => {
                         </svg>
                     </button>
                 </div>
-                <div className="modal-body">
-
-                </div>
-                <div className="modal-footer">
-                    <button type="button">
-                        Don't Agree
-                    </button>
-                    <button type="button">
-                        Agree
-                    </button>
-                </div>
+                {content == 'agreement' && (
+                    <Agreement setModal={setModal}/>
+                )}
+                {content == 'survey' && (
+                    <Survey setModal={setModal}/>
+                )}
             </div>
         </div>
     )

@@ -2,16 +2,26 @@ import { createContext } from "react";
 import { http } from "./http.js";
 
 const local = 'https://iccemapi.dev';
-export const url = 'https://bcd55f15b6ea.ngrok.app';
-export const request = new http('https://bcd55f15b6ea.ngrok.app');
+export const url = 'https://ffa2d0af23bd.ngrok.app';
+export const request = new http(url);
 export const ArtifactContext = createContext();
 
 const synth = window.speechSynthesis;
 
-const speech = () => {
-    const utterance = new SpeechSynthesisUtterance('Testing API');
-    synth.speak(utterance);
+class speech {
+
+    play = (text) => {
+        const utterance = new SpeechSynthesisUtterance(text);
+        console.log(synth.getVoices());
+        if(!synth.pending)
+            synth.speak(utterance);
+    }
+    
+    stop = () => {
+        synth.cancel();
+    }
 }
+export const text2speech = new speech();
 
 export const removeExtension = (file) => {
     const name = file.split('.');

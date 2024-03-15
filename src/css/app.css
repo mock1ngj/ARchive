@@ -12,6 +12,10 @@
     border-radius: 10vh;
 }
 
+.start:hover {
+    background-color: #9DC08B;
+}
+
 .logo {
     position: relative;
     width: 100%;
@@ -34,4 +38,77 @@
 
 .start:hover {
     background-color: #1E5128;
+}
+
+.modal {
+    position: fixed;
+    z-index: 2000;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* Modal Header */
+.modal-header {
+    padding: 2vmin;
+    background-color: white;
+    display: flex;
+    justify-content: flex-end;
+    border-radius: 25px 25px 0 0;
+}
+
+/* Modal Body */
+.modal-body {
+    padding: 2px 16px;
+    display: block;
+    color: black;
+}
+
+/* Modal Footer */
+.modal-footer {
+    padding: 3vmin 3vmin;
+    background-color: white;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 50vh auto 0;
+    transform: translateY(-50%);
+    padding: 2vmin;
+    border: 1px solid #888;
+    border-radius: 15px 15px 15px 15px;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+/* Add Animation */
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
 }

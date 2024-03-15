@@ -10,6 +10,7 @@ import Section from '../ar-components/Section';
 
 export default ({ page }) => {
     const sceneRef = useRef(null);
+    const faqRef = useRef(null)
 
     useEffect(() => {
         const sceneEl = sceneRef.current;
@@ -22,8 +23,8 @@ export default ({ page }) => {
     return (
         <>
             <IconContext.Provider value={{ color: "#4e9f3d", className: "faq-button" }}>
-                <div style={{ position: 'absolute', top: '2vh', right: '5vw', zIndex: 1000 }}>
-                    <FaQuestionCircle onClick={() => { page('home') }}></FaQuestionCircle>
+                <div style={{ position: 'absolute', top: '2vh', right: '5vw', zIndex: 1000, cursor: "pointer" }}>
+                    <FaQuestionCircle onClick={() => { page('faq') }}></FaQuestionCircle>
                 </div>
             </IconContext.Provider>
             <a-scene ref={sceneRef} mindar-image={`filterMinCF:5; filterBeta:2000; imageTargetSrc: ${url}/api/archive/file/targets.mind; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;`} color-space="sRGB" embedded renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
