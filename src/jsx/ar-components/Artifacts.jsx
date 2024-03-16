@@ -7,7 +7,7 @@ import light from "/fonts/Roboto-Regular-msdf.json?url"
 *overflow or even 1 but 1 might be doable depending on the distance of the user
 */
 
-export default ({ artifacts, section }) => {
+export default ({ artifacts, section, view }) => {
     const data = useContext(ArtifactContext);
     const [visible, setVisible] = useState(primer(data));
 
@@ -43,7 +43,7 @@ export default ({ artifacts, section }) => {
     }
 
     return (
-        <a-entity position="0 0 0">
+        <a-entity position="0 0 0" visible={view}>
             {
                 artifacts.map((artifact, i) => (
                     <a-entity visible={visible[section].artifacts[i]} key={i}>
@@ -59,11 +59,18 @@ export default ({ artifacts, section }) => {
                             width="0.4"
                             position="-0.14 0 0.11">
                         </a-image>
-                        <a-entity position="0.24 0 0.1"
-                            geometry="primitive: plane; color: black; width: 0; height: 0.4;"
-                            material="opacity: 0.5; transparent: true"
-                            text={`text:${artifact.name}; align: center; color: white;`}>
-                        </a-entity>
+                        <a-text position="0.24 0.2 0.1" 
+                            value={`${artifact.name}`}
+                            align="center"
+                            color="white"
+                            width="0.8">
+                        </a-text>
+                        <a-text position="0.24 0 0.1"
+                            value={`${artifact.description}`}
+                            align="center"
+                            color="white"
+                            width="0.5">
+                        </a-text>
                     </a-entity>
                 ))
             }

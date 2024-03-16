@@ -2,7 +2,7 @@ import { createContext } from "react";
 import { http } from "./http.js";
 
 const local = 'https://iccemapi.dev';
-export const url = 'https://ffa2d0af23bd.ngrok.app';
+export const url = 'https://18019baadd25.ngrok.app';
 export const request = new http(url);
 export const ArtifactContext = createContext();
 
@@ -12,11 +12,21 @@ class speech {
 
     play = (text) => {
         const utterance = new SpeechSynthesisUtterance(text);
-        console.log(synth.getVoices());
-        if(!synth.pending)
-            synth.speak(utterance);
+        synth.paused ? synth.resume() : synth.speak(utterance);
     }
-    
+
+    playOnce = (text, index) => {
+        if (index != this.index) {
+            this.index = index;
+            this.play(text);
+        }
+    }
+
+    pause = () => {
+        if(synth.speaking)
+            synth.pause();
+    }
+
     stop = () => {
         synth.cancel();
     }
