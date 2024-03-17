@@ -2,12 +2,32 @@ import { createContext } from "react";
 import { http } from "./http.js";
 
 const local = 'https://iccemapi.dev';
-export const url = 'https://18019baadd25.ngrok.app';
+export const url = 'https://972c31ae669c.ngrok.app';
 export const request = new http(url);
 export const ArtifactContext = createContext();
 
 const synth = window.speechSynthesis;
 
+//session wrapper
+class Session {
+    set = (id, value) => {
+        if(typeof value == 'object') 
+            value = JSON.stringify(value);
+        sessionStorage.setItem(id, value);
+    }
+
+    get = (name) => {
+        const value = sessionStorage.getItem(name);
+        try {
+            return JSON.parse(value);
+        } catch (e) {   
+            return value
+        }
+    }
+}
+export const session = new Session();
+
+//speechsynthesis api wrapper
 class speech {
 
     play = (text) => {
@@ -23,7 +43,7 @@ class speech {
     }
 
     pause = () => {
-        if(synth.speaking)
+        if (synth.speaking)
             synth.pause();
     }
 

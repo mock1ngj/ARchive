@@ -1,21 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Home from "./components/Home";
 import AR from "./components/Ar";
-import { request, ArtifactContext } from "../js/main";
+import { request, ArtifactContext, session } from "../js/main";
 import Modal from "./components/Modal";
 import Faq from "./components/Faq";
 
-//request the necessary data
-const data = await request.section();
 
 export default () => {
+    const [data, setData] = useState()
     const [page, setPage] = useState('home');
     const [modal, setModal] = useState('block');
     const [content, setContent] = useState('agreement');
 
+    //request the necessary data and store inside session storage to prevent multiple request
+    useEffect(() => {
+        const fetch = async () => {
+            const response = await request.section();
+            setData(response);
+            session.set('data', response);
+        }
+        session.get('data') == null ? fetch() : setData(session.get('data'));
+    }, []);
+
     return (
         <ArtifactContext.Provider value={data}>
-            {page == "home" &&(<Home page={setPage} />)}
+            {page == "home" && (<Home page={setPage} />)}
             {page == "AR" && (
                 <div style={{ position: "relative", height: "100vh", width: "100vw", overflow: "hidden", }} >
                     <AR page={setPage} />
@@ -23,9 +32,9 @@ export default () => {
                 </div>
             )}
             {page == "faq" && (
-                <Faq page={setPage}/>
+                <Faq page={setPage} />
             )}
-            <Modal state={modal} setModal={setModal} content={content}/>
+            <Modal state={modal} setModal={setModal} content={content} />
         </ArtifactContext.Provider>
     )
 }
