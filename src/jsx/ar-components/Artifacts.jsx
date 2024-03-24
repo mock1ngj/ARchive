@@ -8,7 +8,8 @@ import light from "/fonts/Roboto-Regular-msdf.json?url"
 */
 
 export default ({ artifacts, section, view }) => {
-    const data = useContext(ArtifactContext);
+    const context = useContext(ArtifactContext);
+    const data = context[0];
     const [visible, setVisible] = useState(primer(data));
 
     /*

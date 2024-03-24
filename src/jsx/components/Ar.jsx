@@ -10,7 +10,7 @@ import Section from '../ar-components/Section';
 
 export default ({ page }) => {
     const sceneRef = useRef(null);
-    const faqRef = useRef(null)
+    const [data, setData] = useState();
 
     useEffect(() => {
         const sceneEl = sceneRef.current;
@@ -32,7 +32,7 @@ export default ({ page }) => {
                     <Assets></Assets>
                 </a-assets>
                 <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;" raycaster="far: ${customFields.libVersion}; objects: .clickable"></a-camera>
-                <Section></Section>
+                <Section sections={data}></Section>
             </a-scene>
         </>
     )

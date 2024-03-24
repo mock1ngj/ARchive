@@ -14,6 +14,3 @@ export class http {
         }
     }
 }
-
-const local = 'https://iccemapi.dev';
-const request = new http(local);
