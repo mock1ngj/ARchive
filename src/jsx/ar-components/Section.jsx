@@ -1,65 +1,60 @@
-import { useContext, useState } from "react";
-import { ArtifactContext, text2speech, removeExtension } from "../../js/main";
+import { useContext, useRef, useState } from "react";
 import Artifacts from "./Artifacts";
 import { useEffect } from "react";
+import useSpeech from "../Hooks/useSpeech";
+import { useSessionStorage } from "../Hooks/useStorage";
 
-export default () => {
-    const context = useContext(ArtifactContext);
-    const data = context[0];
-    const stat = context[1];
-    const setStat = context[2];
-    const temp = [];
-
-    //set visibility of each section image
-    data.forEach(element => {
-        temp.push([true, false]);
-    });
-    const [view, setView] = useState(temp);
-
-    const viewHandler = (index) => {
-        let newViews = [...view];
-        let newView = [...view[index]];
-        newView = [false, true];
-        newViews[index] = newView;
-        text2speech.stop();
-        setView(newViews);
-    }
-
-
+export default ({ sections }) => {
+    const { playOnce, stop } = useSpeech();
+    const [viewedSection, setViewedSection] = useSessionStorage("viewedSection", []);
+    const sectionRef = useRef([]);
+    const entityRef = useRef([]);
+    const artifactRef = useRef([]);
+    const [visible, setVisible] = useState(null);
+    
+    //target found
     useEffect(() => {
-        const targets = document.querySelectorAll("a-entity[mindar-image-target]");
-
-        targets.forEach((target) => {
-            target.addEventListener("targetFound", event => {
-                const description = target.getAttribute('data-description');
-                const id = target.getAttribute('data-id');
-                text2speech.playOnce(description, id);
-                const viewed = stat.sections;
-                if (id != viewed[viewed.length - 1]) {
-                    viewed.push(id);
-                    setStat({
-                        ...stat,
-                        section:viewed,
-                        sent:false,
-                    });
+        sections.forEach(section => {
+            sectionRef.current[section.id].addEventListener("targetFound", element => {
+                playOnce(section.id, section.description);
+                
+                //push to sessionStorage the viewed section
+                if (typeof (viewedSection) == "undefined") {
+                    setViewedSection([section.id]);
+                } 
+                if (!viewedSection.includes(section.id)) {
+                    setViewedSection([...viewedSection, section.id]);
                 }
+    
             });
-            target.addEventListener("targetLost", event => {
-                text2speech.stop();
+            sectionRef.current[section.id].addEventListener("targetLost", element => {
+                stop();
             });
         });
     });
 
+    //section and artifact card visibility
+    useEffect(() => {
+        if (visible != null) {
+            const sectionCard = visible.ref;
+            const id = visible.id;
+            const artifactCard = artifactRef.current[id];
+
+            sectionCard.object3D.visible = false;
+            artifactCard.object3D.visible = true;
+        };
+    }, [visible]);
+
     return (
         <>
-            <a-entity>
-
-            </a-entity>
-            {data.map((section, i) => (
-                <a-entity data-description={section.description} data-id={section.id} mindar-image-target={`targetIndex: ${i}`} key={i}>
+            {sections.map((section, i) => (
+                <a-entity
+                    ref={ref => sectionRef.current[section.id] = ref}
+                    mindar-image-target={`targetIndex: ${i}`}
+                    key={i}>
                     <a-entity position="0 0 0"
-                        visible={view[i][0]}>
-                        <a-image src={`#${removeExtension(section.image)}`}
+                        ref={ref => entityRef.current[section.id] = ref}>
+                        <a-image src={`#${section.id}`}
                             height="0.5"
                             width="0.5">
                         </a-image>
@@ -68,12 +63,13 @@ export default () => {
                             geometry="primitive:plane; width:0.3; height:0"
                             material="color:#4e9f3d"
                             text="value: View Artifacts; align:center; width:1"
-                            onClick={() => viewHandler(i)}>
+                            onClick={() => {
+                                setVisible({ref:entityRef.current[section.id], id:section.id});
+                                stop();
+                            }}>
                         </a-entity>
                     </a-entity>
-                    {
-                        <Artifacts artifacts={section.artifacts} section={i} view={view[i][1]} />
-                    }
+                    <Artifacts sectionID={section.id} artifactList={section.artifact} index={i} ref={artifactRef}/>
                 </a-entity>
             ))}
         </>

@@ -1,15 +1,15 @@
-import Agreement from "./ModalContents/Agreement";
-import Survey from "./ModalContents/FormAgreement";
+import { useSessionStorage } from "../Hooks/useStorage";
 
-export default ({state, setModal, content}) => {
+export default () => {
+    const [visible, setVisible] = useSessionStorage("agreement", "block");
 
     return (
-        <div className="modal" style={{display: state}}>
+        <div className="modal" style={{ display: visible }}>
             <div className="modal-content">
                 <div className="modal-header">
                     <button type="button"
-                        style={{justifyContent:"center", alignItems:"center", border:"none", background:"none", cursor:"pointer"}}
-                        onClick={() => setModal('none')}>
+                        style={{ justifyContent: "center", alignItems: "center", border: "none", background: "none", cursor: "pointer" }}
+                        onClick={() => setVisible('none')}>
                         <svg className="flex-shrink:0"
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -25,12 +25,22 @@ export default ({state, setModal, content}) => {
                         </svg>
                     </button>
                 </div>
-                {content == 'agreement' && (
-                    <Agreement setModal={setModal}/>
-                )}
-                {content == 'survey' && (
-                    <Survey setModal={setModal}/>
-                )}
+                <hr />
+                <div className="modal-body">
+                    <div>Welcome to <div style={{ fontWeight: "bold", display: "inline-block" }}>ARchive </div> to fully
+                        utilize our website, we require access to your camera. This allows us to provide our augmented reality experience.
+                        Rest assured, your privacy is our priority, and your camera will only be used for the intended purposes.
+                    </div>
+                </div>
+                <hr />
+                <div className="modal-footer">
+                    <button type="button" style={{ margin: "1vmin", outline: "none", cursor: "pointer" }}
+                        onClick={() => {
+                            setVisible('none');
+                        }}>
+                        Agree
+                    </button>
+                </div>
             </div>
         </div>
     )
