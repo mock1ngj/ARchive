@@ -8,14 +8,8 @@ export default () => {
         synth.speak(utterance);
     }
 
-    const playOnce = (viewed, id, text) => {
-        if (!viewed.includes(id)) {
-            play(text);
-        }
-    }
-
     const stop = () => {
         synth.cancel();
     }
-    return { play, stop, playOnce }
+    return { play, stop }
 }

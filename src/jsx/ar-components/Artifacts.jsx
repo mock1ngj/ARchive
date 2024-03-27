@@ -2,6 +2,7 @@ import useAxios from "axios-hooks"
 import { url } from "../../js/main"
 import { forwardRef, useCallback, useEffect, useReducer, useState } from "react"
 import { useSessionStorage } from "../Hooks/useStorage";
+import { useArtifactContext } from "../Context/ViewedContext";
 
 /*
 *Dont use values greater than 1 for the height and width since it will
@@ -62,17 +63,19 @@ const ArtifactCard = ({ data }) => {
 
 export default forwardRef((props, ref) => {
     const { sectionID, artifactList, index } = props;
-
-    const [viewedArtifact, setViewedArtifact] = useSessionStorage("viewedArtifact", []);
+    const setViewedArtifact = useArtifactContext();
     const [artifact, dispatch] = useReducer(reducer, { artifactList: artifactList, index: 0 })
     const [{ data, loading, error }, refetch] = useAxios({ url: `${url}/api/archive/info/${artifactList[0].id}` });
 
     const pushAndFetch = () => {
         //push to sessionStorage the viewed artifact
         const id = artifact.artifactList[artifact.index].id;
-        if (!viewedArtifact.includes(id)) {
-            setViewedArtifact([...viewedArtifact, id]);
-        }
+        setViewedArtifact((old) => {
+            if (!old.includes(id)) {
+                return [...old, id]
+            }
+            return old
+        });
         //refetch data
         try {
             refetch({ url: `${url}/api/archive/info/${id}` });

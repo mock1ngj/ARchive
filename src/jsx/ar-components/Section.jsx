@@ -2,35 +2,40 @@ import { useContext, useRef, useState } from "react";
 import Artifacts from "./Artifacts";
 import { useEffect } from "react";
 import useSpeech from "../Hooks/useSpeech";
-import { useSessionStorage } from "../Hooks/useStorage";
+import { useArtifactContext, useSectionContext } from "../Context/ViewedContext";
 
 export default ({ sections }) => {
-    const { playOnce, stop } = useSpeech();
-    const [viewedSection, setViewedSection] = useSessionStorage("viewedSection", []);
-    const [viewedArtifact, setViewedArtifact] = useSessionStorage("viewedArtifact", []);
+    const { play, stop } = useSpeech();
+
+    const sectionContext = useSectionContext();
+    const setViewedSection = sectionContext;
+
+    const artifactContext = useArtifactContext();
+    const setViewedArtifact = artifactContext;
+
     const sectionRef = useRef([]);
     const entityRef = useRef([]);
     const artifactRef = useRef([]);
     const [visible, setVisible] = useState(null);
-    
+
     //target found
     useEffect(() => {
         sections.forEach(section => {
-            sectionRef.current[section.id].addEventListener("targetFound", element => {
-                playOnce(viewedSection, section.id, section.description);
-                //push to sessionStorage the viewed section
-                if (typeof (viewedSection) == "undefined") {
-                    setViewedSection([section.id]);
-                } 
-                if (!viewedSection.includes(section.id)) {
-                    setViewedSection([...viewedSection, section.id]);
-                }
+            sectionRef.current[section.id].addEventListener("targetFound", event => {
+                //push to viewed section if unique
+                setViewedSection((old) => {
+                    if (!old.includes(section.id)) {
+                        play(section.description);
+                        return [...old, section.id]
+                    }
+                    return old
+                })
             });
-            sectionRef.current[section.id].addEventListener("targetLost", element => {
+            sectionRef.current[section.id].addEventListener("targetLost", event => {
                 stop();
             });
         });
-    });
+    }, []);
 
     //section and artifact card visibility
     useEffect(() => {
@@ -38,17 +43,17 @@ export default ({ sections }) => {
             const sectionCard = visible.ref;
             const id = visible.id;
             const artifactCard = artifactRef.current[id];
-            const artifactID = visible.artifact.id;
+            const artifactId = visible.artifact.id;
 
-            console.log(artifactID);
+            //push to viewed artifact if unique
+            setViewedArtifact((old)=>{
+                if (!old.includes(artifactId)) {
+                    return [...old, artifactId]
+                }
+                return old
+            });
 
             //push to sessionStorage the viewed artifact
-            if (typeof (viewedArtifact) == "undefined") {
-                setViewedArtifact([artifactID]);
-            }
-            if (!viewedArtifact.includes(artifactID)) {
-                setViewedArtifact([...viewedArtifact, artifactID]);
-            }
 
             sectionCard.object3D.visible = false;
             artifactCard.object3D.visible = true;
@@ -61,6 +66,7 @@ export default ({ sections }) => {
                 <a-entity
                     ref={ref => sectionRef.current[section.id] = ref}
                     mindar-image-target={`targetIndex: ${i}`}
+                    data-id={section.id}
                     key={i}>
                     <a-entity position="0 0 0"
                         ref={ref => entityRef.current[section.id] = ref}>
@@ -74,12 +80,12 @@ export default ({ sections }) => {
                             material="color:#4e9f3d"
                             text="value: View Artifacts; align:center; width:1"
                             onClick={() => {
-                                setVisible({ref:entityRef.current[section.id], id:section.id, artifact:section.artifact[0]});
+                                setVisible({ ref: entityRef.current[section.id], id: section.id, artifact: section.artifact[0] });
                                 stop();
                             }}>
                         </a-entity>
                     </a-entity>
-                    <Artifacts sectionID={section.id} artifactList={section.artifact} index={i} ref={artifactRef}/>
+                    <Artifacts sectionID={section.id} artifactList={section.artifact} index={i} ref={artifactRef} />
                 </a-entity>
             ))}
         </>
