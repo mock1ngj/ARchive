@@ -12,6 +12,10 @@ playground.js
 # todos
 todo.txt
 
+#ssl
+cert.pem
+key.pem
+
 node_modules
 dist
 dist-ssr

@@ -5,7 +5,7 @@ export default ({ page }) => {
     return (
         <>
             <div style={{margin:"4vi", marginTop:"10vh"}}>
-                <img src={`${url}/api/archive/asset/logo.png`} className="logo"/>
+                <img src={`${url}/api/archive/file/logo.png`} className="logo"/>
             </div>
             <div >
                 <div >
