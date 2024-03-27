@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 
 export default () => {
-    const [last, setLast] = useState(null);
     const synth = window.speechSynthesis;
 
     const play = (text) => {
@@ -9,9 +8,8 @@ export default () => {
         synth.speak(utterance);
     }
 
-    const playOnce = (index, text) => {
-        if (index != last) {
-            setLast(index);
+    const playOnce = (viewed, id, text) => {
+        if (!viewed.includes(id)) {
             play(text);
         }
     }

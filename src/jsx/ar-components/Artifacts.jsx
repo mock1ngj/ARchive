@@ -1,28 +1,44 @@
 import useAxios from "axios-hooks"
 import { url } from "../../js/main"
-import { forwardRef, useState } from "react"
+import { forwardRef, useCallback, useEffect, useReducer, useState } from "react"
+import { useSessionStorage } from "../Hooks/useStorage";
 
 /*
 *Dont use values greater than 1 for the height and width since it will
 *overflow or even 1 but 1 might be doable depending on the distance of the user
 */
 
-const Artifact = forwardRef((props, ref) => {
-    const { sectionID, artifactList } = props;
-    const [artifactsList, setArtifactsList] = useState(artifactList);
-    const [index, setIndex] = useState(0);
-    const [artifact, setArtifact] = useState(artifactList[index]);
-    console.log(artifact.id);
-    const [{ data, loading, error }, refetch] = useAxios({ url: `${url}/api/archive/info/${artifact.id}` });
-    
-    if (loading) {
-        return (
-            <a-entity position="0 0 0" visible={false} ref={artifact => ref.current[sectionID] = artifact}></a-entity>
-        )
+const reducer = (state, action) => {
+    const artifactList = state.artifactList;
+    switch (action.type) {
+        case "next":
+            if (state.index < artifactList.length - 1) {
+                const index = state.index + 1;
+                return { ...state, index: index };
+            }
+            else {
+                const index = 0;
+                return { ...state, index: index };
+            }
+        case "prev":
+            if (state.index == 0) {
+                const index = artifactList.length - 1;
+                return { ...state, index: index };
+            }
+            else {
+                const index = state.index - 1;
+                return { ...state, index: index };
+            }
+            break;
+        default:
+            break;
     }
+}
+
+const ArtifactCard = ({ data }) => {
 
     return (
-        <a-entity position="0 0 0" visible={false} ref={artifact => ref.current[sectionID] = artifact}>
+        <>
             <a-image src={`${url}/api/archive/asset/${data[0].image}`}
                 height="0.4"
                 width="0.4"
@@ -40,39 +56,76 @@ const Artifact = forwardRef((props, ref) => {
                 color="white"
                 width="0.5">
             </a-text>
-            <a-image class="clickable"
-                src="#next"
-                position="0.5 0 0"
-                height="0.125"
-                width="0.125">
-            </a-image>
-            <a-image
-                class="clickable"
-                src="#prev"
-                position="-0.5 0 0"
-                height="0.125"
-                width="0.125">
-            </a-image>
-
-        </a-entity>
+        </>
     )
-});
+};
 
 export default forwardRef((props, ref) => {
     const { sectionID, artifactList, index } = props;
-    console.log(artifactList);
-    if (typeof (artifactList[index]) == "undefined") {
-        return (
-            <a-entity position="0 0 0" visible={false} ref={artifact => ref.current[sectionID] = artifact}>
+
+    const [viewedArtifact, setViewedArtifact] = useSessionStorage("viewedArtifact", []);
+    const [artifact, dispatch] = useReducer(reducer, { artifactList: artifactList, index: 0 })
+    const [{ data, loading, error }, refetch] = useAxios({ url: `${url}/api/archive/info/${artifactList[0].id}` });
+
+    const pushAndFetch = () => {
+        //push to sessionStorage the viewed artifact
+        const id = artifact.artifactList[artifact.index].id;
+        if (!viewedArtifact.includes(id)) {
+            setViewedArtifact([...viewedArtifact, id]);
+        }
+        //refetch data
+        try {
+            refetch({ url: `${url}/api/archive/info/${id}` });
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+
+    const next = () => {
+        dispatch({ type: "next" });
+        pushAndFetch();
+    }
+
+    const prev = () => {
+        dispatch({ type: "prev" });
+        pushAndFetch();
+    }
+
+    return (
+        <a-entity position="0 0 0" visible={false} ref={artifact => ref.current[sectionID] = artifact}>
+            {typeof (artifactList[index]) == "undefined" && (
                 <a-text value="This Section is Empty"
                     width="1"
                     color="white">
                 </a-text>
-            </a-entity>
-        )
-    }
-
-    return (
-        <Artifact sectionID={sectionID} artifactList={artifactList} ref={ref} />
+            )}
+            {loading && (
+                <a-text value="Loading..."
+                    width="1"
+                    color="white">
+                </a-text>
+            )}
+            {!loading && (
+                <>
+                    <ArtifactCard data={data} artifact={artifact} />
+                    <a-image class="clickable"
+                        src="#next"
+                        position="0.5 0 0"
+                        height="0.125"
+                        width="0.125"
+                        onClick={() => next()}>
+                    </a-image>
+                    <a-image
+                        class="clickable"
+                        src="#prev"
+                        position="-0.5 0 0"
+                        height="0.125"
+                        width="0.125"
+                        onClick={() => prev()}>
+                    </a-image>
+                </>
+            )}
+        </a-entity>
     )
-})
+});

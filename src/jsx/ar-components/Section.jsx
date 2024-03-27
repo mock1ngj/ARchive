@@ -7,6 +7,7 @@ import { useSessionStorage } from "../Hooks/useStorage";
 export default ({ sections }) => {
     const { playOnce, stop } = useSpeech();
     const [viewedSection, setViewedSection] = useSessionStorage("viewedSection", []);
+    const [viewedArtifact, setViewedArtifact] = useSessionStorage("viewedArtifact", []);
     const sectionRef = useRef([]);
     const entityRef = useRef([]);
     const artifactRef = useRef([]);
@@ -16,8 +17,7 @@ export default ({ sections }) => {
     useEffect(() => {
         sections.forEach(section => {
             sectionRef.current[section.id].addEventListener("targetFound", element => {
-                playOnce(section.id, section.description);
-                
+                playOnce(viewedSection, section.id, section.description);
                 //push to sessionStorage the viewed section
                 if (typeof (viewedSection) == "undefined") {
                     setViewedSection([section.id]);
@@ -25,7 +25,6 @@ export default ({ sections }) => {
                 if (!viewedSection.includes(section.id)) {
                     setViewedSection([...viewedSection, section.id]);
                 }
-    
             });
             sectionRef.current[section.id].addEventListener("targetLost", element => {
                 stop();
@@ -39,6 +38,17 @@ export default ({ sections }) => {
             const sectionCard = visible.ref;
             const id = visible.id;
             const artifactCard = artifactRef.current[id];
+            const artifactID = visible.artifact.id;
+
+            console.log(artifactID);
+
+            //push to sessionStorage the viewed artifact
+            if (typeof (viewedArtifact) == "undefined") {
+                setViewedArtifact([artifactID]);
+            }
+            if (!viewedArtifact.includes(artifactID)) {
+                setViewedArtifact([...viewedArtifact, artifactID]);
+            }
 
             sectionCard.object3D.visible = false;
             artifactCard.object3D.visible = true;
@@ -64,7 +74,7 @@ export default ({ sections }) => {
                             material="color:#4e9f3d"
                             text="value: View Artifacts; align:center; width:1"
                             onClick={() => {
-                                setVisible({ref:entityRef.current[section.id], id:section.id});
+                                setVisible({ref:entityRef.current[section.id], id:section.id, artifact:section.artifact[0]});
                                 stop();
                             }}>
                         </a-entity>
