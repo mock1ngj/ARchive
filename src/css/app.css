@@ -1,5 +1,5 @@
 .start {
-    background-color: #4e9f3d;
+    background-color: rgb(78, 159, 61);
     border: none;
     color: white;
     padding: 2vw 2vh;
@@ -10,6 +10,75 @@
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 10vh;
+}
+
+.review-button {
+    background-color: rgb(96, 153, 102);
+    border: none;
+    color: white;
+    padding: 2vw 2vh;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 15px 15px 15px 15px;
+}
+
+.review {
+    position: absolute;
+    background-color: rgb(64, 81, 59);
+    z-index: 1000;
+    width: 70%;
+    display: none;
+    border-radius: 15px 15px 15px 15px;
+    top: 50%;
+    left: 50%;
+    overflow-y: auto;
+    animation: fadeInAnimation ease 3s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    transform: translate(-50%, -50%);
+}
+
+.faq {
+    position: absolute;
+    background-color: rgba(55, 51, 48, 0.548);
+    z-index: 1000;
+    width: 80%;
+    height: 70%;
+    display: none;
+    border-radius: 15px 15px 15px 15px;
+    top: 50%;
+    left: 50%;
+    overflow-y: auto;
+    animation: fadeInAnimation ease 3s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Modal Header */
+.header {
+    padding: 2vmin;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.footer {
+    padding: 3vmin 3vmin;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .start:hover {
