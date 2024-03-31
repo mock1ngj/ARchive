@@ -14,28 +14,15 @@ export default () => {
 
     const [page, setPage] = useState('home');
 
+    //visibility checker
     document.addEventListener('visibilitychange', useCallback(() => {
         if (document.visibilityState === "hidden") {
             navigator.sendBeacon(`${url}/api/views`, JSON.stringify({sections:viewedSection, artifacts:viewedArtifact}))
         }
-    }, [document.visibilityState]))
-    /* 
-        useCallback(() => {
-            //send number of views to api if tab/window gets unfocused
-            //more reliable than beforeunload event according to mdn
-            document.addEventListener('visibilitychange', (e) => {
-                if (document.visibilityState == "hidden" && !stat.sent) {
-                    //navigator.sendBeacon(`${url}/api/views`, JSON.stringify(stat));
-                    setStat(prev => ({
-                        ...stat,
-                        sent: !prev.sent
-                    }))
-                }
-            });
-        }, [stat.sent]) */
+    }, [document.visibilityState]));
 
     return (
-        <ViewedSection.Provider value={setViewedSection}>
+        <ViewedSection.Provider value={{setViewedSection:setViewedSection, section:viewedSection}}>
             <ViewedArtifact.Provider value={setViewedArtifact}>
                 {page == "home" && (<Home page={setPage} />)}
                 {page == "AR" && (

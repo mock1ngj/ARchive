@@ -8,7 +8,7 @@ export default ({ sections }) => {
     const { play, stop } = useSpeech();
 
     const sectionContext = useSectionContext();
-    const setViewedSection = sectionContext;
+    const setViewedSection = sectionContext.setViewedSection;
 
     const artifactContext = useArtifactContext();
     const setViewedArtifact = artifactContext;
@@ -46,7 +46,7 @@ export default ({ sections }) => {
             const artifactId = visible.artifact.id;
 
             //push to viewed artifact if unique
-            setViewedArtifact((old)=>{
+            setViewedArtifact((old) => {
                 if (!old.includes(artifactId)) {
                     return [...old, artifactId]
                 }
@@ -54,7 +54,6 @@ export default ({ sections }) => {
             });
 
             //push to sessionStorage the viewed artifact
-
             sectionCard.object3D.visible = false;
             artifactCard.object3D.visible = true;
         };
@@ -71,19 +70,28 @@ export default ({ sections }) => {
                     <a-entity position="0 0 0"
                         ref={ref => entityRef.current[section.id] = ref}>
                         <a-image src={`#${section.id}`}
-                            height="0.5"
-                            width="0.5">
+                            height="1"
+                            width="1">
                         </a-image>
                         <a-entity class="clickable"
-                            position="0 -0.3 0.3"
-                            geometry="primitive:plane; width:0.3; height:0"
+                            position="0 -0.7 0"
+                            geometry="primitive:plane; width:1; height:0"
                             material="color:#4e9f3d"
-                            text="value: View Artifacts; align:center; width:1"
+                            text="value: View Artifacts; align:center; width:3"
                             onClick={() => {
                                 setVisible({ ref: entityRef.current[section.id], id: section.id, artifact: section.artifact[0] });
                                 stop();
                             }}>
                         </a-entity>
+                        <a-image class="clickable"
+                            src={'#mic'}
+                            position="0 -1 0"
+                            height="0.2"
+                            width="0.2"
+                            onClick={()=>{
+                               play(section.description);
+                            }}>
+                        </a-image>
                     </a-entity>
                     <Artifacts sectionID={section.id} artifactList={section.artifact} index={i} ref={artifactRef} />
                 </a-entity>
