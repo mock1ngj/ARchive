@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Artifacts from "./Artifacts";
 import { useEffect } from "react";
 import useSpeech from "../Hooks/useSpeech";

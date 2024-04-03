@@ -1,7 +1,8 @@
-import { url } from '../../js/main';
 import '../../css/app.css';
+import { useUrlContext } from '../Context/UrlContext';
 
 export default ({ page }) => {
+    const url = useUrlContext();
     return (
         <>
             <div style={{margin:"4vi", marginTop:"10vh"}}>

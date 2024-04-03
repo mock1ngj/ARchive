@@ -1,9 +1,8 @@
-import useAxios from "axios-hooks"
-import { url } from "../../js/main"
-import { forwardRef, useCallback, useEffect, useReducer, useState } from "react"
-import { useSessionStorage } from "../Hooks/useStorage";
+import useAxios from "axios-hooks";
+import { forwardRef, useReducer} from "react";
 import { useArtifactContext } from "../Context/ViewedContext";
 import useSpeech from "../Hooks/useSpeech";
+import { useUrlContext } from "../Context/UrlContext";
 
 /*
 *Dont use values greater than 1 for the height and width since it will
@@ -38,7 +37,7 @@ const reducer = (state, action) => {
 }
 
 const ArtifactCard = ({ data }) => {
-
+    const url = useUrlContext();
     return (
         <>
             <a-image src={`${url}/api/archive/asset/${data[0].image}`}
@@ -52,7 +51,7 @@ const ArtifactCard = ({ data }) => {
                 color="white"
                 width="2">
             </a-text>
-            <a-text position="0 -0.9 0.1"
+            <a-text position="0 -1 0.1"
                 value={`${data[0].description}`}
                 align="center"
                 color="white"
@@ -63,11 +62,13 @@ const ArtifactCard = ({ data }) => {
 };
 
 export default forwardRef((props, ref) => {
+    const url = useUrlContext();
     const { sectionID, artifactList, index } = props;
-    const {play, stop} = useSpeech();
-    const setViewedArtifact = useArtifactContext();
-    const [artifact, dispatch] = useReducer(reducer, { artifactList: artifactList, index: 0,stop:stop })
     const [{ data, loading, error }, refetch] = useAxios({ url: `${url}/api/archive/info/${artifactList[0].id}` });
+
+    const { play, stop } = useSpeech();
+    const setViewedArtifact = useArtifactContext();
+    const [artifact, dispatch] = useReducer(reducer, { artifactList: artifactList, index: 0, stop: stop });
 
     const pushAndFetch = () => {
         //push to sessionStorage the viewed artifact
@@ -97,14 +98,25 @@ export default forwardRef((props, ref) => {
         pushAndFetch();
     }
 
-    return (
-        <a-entity position="0 0 0" visible={false} ref={artifact => ref.current[sectionID] = artifact}>
-            {typeof (artifactList[index]) == "undefined" && (
+    if (typeof (artifactList[index].id) == "undefined") {
+        return (
+            <a-entity position="0 0 0"
+                visible={false}
+                ref={artifact => ref.current[sectionID] = artifact} >
                 <a-text value="This Section is Empty"
                     width="1"
                     color="white">
                 </a-text>
-            )}
+            </a-entity>
+        )
+
+    }
+
+    return (
+        <a-entity
+            position="0 0 0"
+            visible={false}
+            ref={artifact => ref.current[sectionID] = artifact}>
             {loading && (
                 <a-text value="Loading..."
                     width="1"
@@ -113,7 +125,9 @@ export default forwardRef((props, ref) => {
             )}
             {!loading && (
                 <>
-                    <ArtifactCard data={data} artifact={artifact} />
+                    <ArtifactCard
+                        data={data}
+                        artifact={artifact} />
                     <a-image class="clickable"
                         src="#next"
                         position="0.5 -0.7 0"
