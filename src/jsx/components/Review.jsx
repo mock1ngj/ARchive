@@ -31,7 +31,7 @@ export default forwardRef((props, ref) => {
             </div>
             <hr />
             <div className='footer'>
-                <button type="button" className="review-button"
+                <button type="button" className="button"
                     onClick={() => reviewPopupHandler("reviewRedirect")}>
                     Review
                 </button>

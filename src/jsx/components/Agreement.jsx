@@ -34,7 +34,8 @@ export default () => {
                 </div>
                 <hr />
                 <div className="modal-footer">
-                    <button type="button" style={{ margin: "1vmin", outline: "none", cursor: "pointer" }}
+                    <button type="button"
+                        className="button"
                         onClick={() => {
                             setVisible('none');
                         }}>

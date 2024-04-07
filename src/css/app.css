@@ -12,7 +12,7 @@
     border-radius: 10vh;
 }
 
-.review-button {
+.button {
     background-color: rgb(96, 153, 102);
     border: none;
     color: white;
@@ -45,7 +45,7 @@
     background-color: rgba(55, 51, 48, 0.548);
     z-index: 1000;
     width: 80%;
-    height: 70%;
+    height: 50dvh;
     display: none;
     border-radius: 15px 15px 15px 15px;
     top: 50%;
@@ -55,6 +55,7 @@
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
     transform: translate(-50%, -50%);
+    font-size: medium;
 }
 
 @keyframes fadeInAnimation {
@@ -158,7 +159,7 @@
 .modal-content {
     position: relative;
     background-color: #fefefe;
-    margin: 50vh auto 0;
+    margin: 50dvh auto 0;
     transform: translateY(-50%);
     padding: 2vmin;
     border: 1px solid #888;

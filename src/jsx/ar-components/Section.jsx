@@ -77,17 +77,19 @@ export default ({ sections }) => {
                             position="0 -0.7 0"
                             geometry="primitive:plane; width:1; height:0"
                             material="color:#4e9f3d"
-                            text="value: View Artifacts; align:center; width:3"
+                            text={`value:View ${section.as}; align:center; width:3`}
                             onClick={() => {
                                 setVisible({ ref: entityRef.current[section.id], id: section.id, artifact: section.artifact[0] });
                                 stop();
                             }}>
                         </a-entity>
                         <a-image class="clickable"
-                            src={'#mic'}
+                            text="value:Play Introduction; align:center; width:3"
+                            geometry="primitive:plane; width:1; height:0"
+                            material="color:#4e9f3d"
                             position="0 -1 0"
-                            height="0.2"
-                            width="0.2"
+                            height="1"
+                            width="1"
                             onClick={()=>{
                                play(section.description);
                             }}>

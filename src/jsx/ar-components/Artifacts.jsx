@@ -149,7 +149,7 @@ export default forwardRef((props, ref) => {
                         position="0 -0.7 0"
                         height="0.2"
                         width="0.2"
-                        onClick={() => play(data[0].description)}>
+                        onClick={() => play(`${data[0].description}. Fun fact ${data[0].facts}`)}>
                     </a-image>
                 </>
             )}
