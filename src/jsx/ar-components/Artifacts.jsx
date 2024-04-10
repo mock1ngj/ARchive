@@ -144,17 +144,18 @@ const FetchArtifact = forwardRef((props, ref) => {
 });
 
 export default forwardRef((props, ref) => {
-    const { sectionID, artifactList} = props;
+    const { sectionID, artifactList } = props;
 
     if (!isArray(sectionID)) {
         return (
             <a-entity position="0 0 0"
                 visible={false}
+                text={"value:This Section is Empty; align:center; width:2"}
+                geometry="primitive:plane; width:1; height:0"
+                material="color:#4e9f3d"
+                height="1"
+                width="1"
                 ref={artifact => ref.current[sectionID] = artifact} >
-                <a-text value="This Section is Empty"
-                    width="2"
-                    color="white">
-                </a-text>
             </a-entity>
         )
     }
