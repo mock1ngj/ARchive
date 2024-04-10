@@ -1,8 +1,9 @@
 import useAxios from "axios-hooks";
-import { forwardRef, useReducer} from "react";
+import { forwardRef, useReducer } from "react";
 import { useArtifactContext } from "../Context/ViewedContext";
 import useSpeech from "../Hooks/useSpeech";
 import { useUrlContext } from "../Context/UrlContext";
+import { isArray } from "lodash";
 
 /*
 *Dont use values greater than 1 for the height and width since it will
@@ -61,10 +62,10 @@ const ArtifactCard = ({ data }) => {
     )
 };
 
-export default forwardRef((props, ref) => {
+const FetchArtifact = forwardRef((props, ref) => {
     const url = useUrlContext();
-    const { sectionID, artifactList, index } = props;
-    const [{ data, loading, error }, refetch] = useAxios({ url: `${url}/api/archive/info/${artifactList[0].id}` });
+    const { sectionID, artifactList } = props;
+    const [{ data, loading }, refetch] = useAxios({ url: `${url}/api/archive/info/${artifactList[0].id}` });
 
     const { play, stop } = useSpeech();
     const setViewedArtifact = useArtifactContext();
@@ -98,23 +99,8 @@ export default forwardRef((props, ref) => {
         pushAndFetch();
     }
 
-    if (typeof (artifactList[index].id) == "undefined") {
-        return (
-            <a-entity position="0 0 0"
-                visible={false}
-                ref={artifact => ref.current[sectionID] = artifact} >
-                <a-text value="This Section is Empty"
-                    width="1"
-                    color="white">
-                </a-text>
-            </a-entity>
-        )
-
-    }
-
     return (
-        <a-entity
-            position="0 0 0"
+        <a-entity position="0 0 0"
             visible={false}
             ref={artifact => ref.current[sectionID] = artifact}>
             {loading && (
@@ -155,4 +141,23 @@ export default forwardRef((props, ref) => {
             )}
         </a-entity>
     )
+});
+
+export default forwardRef((props, ref) => {
+    const { sectionID, artifactList} = props;
+
+    if (!isArray(sectionID)) {
+        return (
+            <a-entity position="0 0 0"
+                visible={false}
+                ref={artifact => ref.current[sectionID] = artifact} >
+                <a-text value="This Section is Empty"
+                    width="2"
+                    color="white">
+                </a-text>
+            </a-entity>
+        )
+    }
+
+    return <FetchArtifact sectionID={sectionID} artifactList={artifactList} ref={ref} />
 });

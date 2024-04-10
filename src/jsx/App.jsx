@@ -7,7 +7,7 @@ import { ViewedArtifact, ViewedSection } from "./Context/ViewedContext";
 import { URLContext } from "./Context/UrlContext";
 
 export default () => {
-    const url = 'https://ecb722c50d10.ngrok.app';
+    const url = 'http://localhost:8000';
     //initialize session
     const [viewedArtifact, setViewedArtifact] = useSessionStorage("sessionArtifact", []);
     const [viewedSection, setViewedSection] = useSessionStorage("sessionSection", []);

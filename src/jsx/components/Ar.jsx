@@ -88,7 +88,7 @@ export default () => {
             <Faq faqPopupHandler={faqPopupHandler} ref={faqRef} />
             <Review reviewPopupHandler={reviewPopupHandler} ref={reviewRef} />
             {(assetLoading || sectionLoading) && (
-                <p>Loading...</p>
+                <p style={{textAlign:"center"}}>Loading...</p>
             )}
             {!(assetLoading || sectionLoading) && (
                 <>

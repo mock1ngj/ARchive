@@ -3,6 +3,7 @@ import Artifacts from "./Artifacts";
 import { useEffect } from "react";
 import useSpeech from "../Hooks/useSpeech";
 import { useArtifactContext, useSectionContext } from "../Context/ViewedContext";
+import { has } from "lodash";
 
 export default ({ sections }) => {
     const { play, stop } = useSpeech();
@@ -40,15 +41,15 @@ export default ({ sections }) => {
     //section and artifact card visibility
     useEffect(() => {
         if (visible != null) {
+            const artifactId = visible.artifact;
             const sectionCard = visible.ref;
             const id = visible.id;
             const artifactCard = artifactRef.current[id];
-            const artifactId = visible.artifact.id;
 
             //push to viewed artifact if unique
             setViewedArtifact((old) => {
-                if (!old.includes(artifactId)) {
-                    return [...old, artifactId]
+                if (!old.includes(artifactId) && has(artifactId, 'id')) {
+                    return [...old, artifactId.id]
                 }
                 return old
             });
