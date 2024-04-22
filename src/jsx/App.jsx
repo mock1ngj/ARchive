@@ -7,7 +7,7 @@ import { ViewedArtifact, ViewedSection } from "./Context/ViewedContext";
 import { URLContext } from "./Context/UrlContext";
 
 export default () => {
-    const url = 'http://localhost:8000';
+    const url = 'https://61df635a806c.ngrok.app';
     //initialize session
     const [viewedArtifact, setViewedArtifact] = useSessionStorage("sessionArtifact", []);
     const [viewedSection, setViewedSection] = useSessionStorage("sessionSection", []);
@@ -17,6 +17,7 @@ export default () => {
     //visibility checker
     document.addEventListener('visibilitychange', useCallback(() => {
         if (document.visibilityState === "hidden") {
+            //send views
             navigator.sendBeacon(`${url}/api/views`, JSON.stringify({ sections: viewedSection, artifacts: viewedArtifact }))
         }
     }, [document.visibilityState]));

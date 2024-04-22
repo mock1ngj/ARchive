@@ -55,17 +55,17 @@ export default () => {
         reviewRef.current.style.display = popupToggle.reviewDisplay;
     }
 
-    //show review popup every 2 minutes if user
+    //show review popup every 10 minutes if user
     //hasnt reviewed this session yet
     setTimeout(() => {
         if (!review) {
             reviewRef.current.style.display = 'block';
         }
-    }, 180000);
+    }, 600000);
 
     //ask for review if user has seen 2 sections
     useEffect(() => {
-        if (section.length > 1) {
+        if (section.length > 3) {
             reviewRef.current.style.display = 'block';
         }
     }, [section.length]);

@@ -12,7 +12,6 @@ import { isArray } from "lodash";
 
 const reducer = (state, action) => {
     const artifactList = state.artifactList;
-    state.stop();
     switch (action.type) {
         case "next":
             if (state.index < artifactList.length - 1) {
@@ -52,7 +51,7 @@ const ArtifactCard = ({ data }) => {
                 color="white"
                 width="2">
             </a-text>
-            <a-text position="0 -1 0.1"
+            <a-text position="0 -1.4 0.1"
                 value={`${data[0].description}`}
                 align="center"
                 color="white"
@@ -67,9 +66,9 @@ const FetchArtifact = forwardRef((props, ref) => {
     const { sectionID, artifactList } = props;
     const [{ data, loading }, refetch] = useAxios({ url: `${url}/api/archive/info/${artifactList[0].id}` });
 
-    const { play, stop } = useSpeech();
+    const { play } = useSpeech();
     const setViewedArtifact = useArtifactContext();
-    const [artifact, dispatch] = useReducer(reducer, { artifactList: artifactList, index: 0, stop: stop });
+    const [artifact, dispatch] = useReducer(reducer, { artifactList: artifactList, index: 0});
 
     const pushAndFetch = () => {
         //push to sessionStorage the viewed artifact
@@ -146,7 +145,7 @@ const FetchArtifact = forwardRef((props, ref) => {
 export default forwardRef((props, ref) => {
     const { sectionID, artifactList } = props;
 
-    if (!isArray(sectionID)) {
+    if (!isArray(artifactList)) {
         return (
             <a-entity position="0 0 0"
                 visible={false}

@@ -5,6 +5,8 @@ export default () => {
 
     const play = (text) => {
         const utterance = new SpeechSynthesisUtterance(text);
+        if (synth.speaking)
+            synth.cancel();
         synth.speak(utterance);
     }
 

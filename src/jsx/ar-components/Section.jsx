@@ -6,7 +6,7 @@ import { useArtifactContext, useSectionContext } from "../Context/ViewedContext"
 import { has } from "lodash";
 
 export default ({ sections }) => {
-    const { play, stop } = useSpeech();
+    const { play } = useSpeech();
 
     const sectionContext = useSectionContext();
     const setViewedSection = sectionContext.setViewedSection;
@@ -19,9 +19,10 @@ export default ({ sections }) => {
     const artifactRef = useRef([]);
     const [visible, setVisible] = useState(null);
 
-    //target found
+
     useEffect(() => {
         sections.forEach(section => {
+            //target found
             sectionRef.current[section.id].addEventListener("targetFound", event => {
                 //push to viewed section if unique
                 setViewedSection((old) => {
@@ -32,8 +33,8 @@ export default ({ sections }) => {
                     return old
                 })
             });
+            //lost event
             sectionRef.current[section.id].addEventListener("targetLost", event => {
-                stop();
             });
         });
     }, []);
@@ -81,7 +82,6 @@ export default ({ sections }) => {
                             text={`value:View ${section.as}; align:center; width:3`}
                             onClick={() => {
                                 setVisible({ ref: entityRef.current[section.id], id: section.id, artifact: section.artifact[0] });
-                                stop();
                             }}>
                         </a-entity>
                         <a-image class="clickable"
@@ -91,8 +91,8 @@ export default ({ sections }) => {
                             position="0 -1 0"
                             height="1"
                             width="1"
-                            onClick={()=>{
-                               play(section.description);
+                            onClick={() => {
+                                play(section.description);
                             }}>
                         </a-image>
                     </a-entity>
