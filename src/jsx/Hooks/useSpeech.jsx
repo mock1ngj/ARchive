@@ -5,13 +5,16 @@ export default () => {
 
     const play = (text) => {
         const utterance = new SpeechSynthesisUtterance(text);
-        if (synth.speaking)
-            synth.cancel();
+        synth.resume();
         synth.speak(utterance);
+    }
+
+    const pause = () =>{
+        synth.pause();
     }
 
     const stop = () => {
         synth.cancel();
     }
-    return { play, stop }
+    return { play, stop, pause }
 }

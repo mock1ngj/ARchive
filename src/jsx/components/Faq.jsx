@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 export default forwardRef((props, ref) => {
     const { faqPopupHandler } = props;
-    const sectionStyle = { display: "block", fontSize: "2rem", marginTop:"2vh" };
+    const sectionStyle = { display: "block", marginTop:"2vh" };
     return (
         <div ref={ref} className="faq">
             <div className="header">

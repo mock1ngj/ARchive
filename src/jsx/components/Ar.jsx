@@ -24,7 +24,7 @@ const reducer = (state, action) => {
                 return { ...state, reviewDisplay: 'none' }
             return { ...state, reviewDisplay: 'block' }
         case 'reviewRedirect':
-            state.setReview(old=>!old);
+            state.setReview(old => !old);
             window.open(`${url}/survey`, "_blank", "noreferrer");
             return { ...state, reviewDisplay: 'none' }
         default:
@@ -40,7 +40,7 @@ export default () => {
     const sceneRef = useRef(null);
     const faqRef = useRef(null);
     const reviewRef = useRef(null);
-    const [popupToggle, dispatch] = useReducer(reducer, { faqDisplay: 'none', reviewDisplay: 'none', setReview:setReview, url:url});
+    const [popupToggle, dispatch] = useReducer(reducer, { faqDisplay: 'none', reviewDisplay: 'none', setReview: setReview, url: url });
 
     const [{ data: assetData, loading: assetLoading, error: assetError }] = useAxios({ url: `${url}/api/asset`, method: "POST" });
     const [{ data: sectionData, loading: sectionLoading, error: sectionError }] = useAxios({ url: `${url}/api/archive/section`, method: "POST" });
@@ -88,7 +88,7 @@ export default () => {
             <Faq faqPopupHandler={faqPopupHandler} ref={faqRef} />
             <Review reviewPopupHandler={reviewPopupHandler} ref={reviewRef} />
             {(assetLoading || sectionLoading) && (
-                <p style={{textAlign:"center"}}>Loading...</p>
+                <p style={{ textAlign: "center" }}>Loading...</p>
             )}
             {!(assetLoading || sectionLoading) && (
                 <>

@@ -6,7 +6,7 @@ import { useArtifactContext, useSectionContext } from "../Context/ViewedContext"
 import { has } from "lodash";
 
 export default ({ sections }) => {
-    const { play } = useSpeech();
+    const { play, stop, pause } = useSpeech();
 
     const sectionContext = useSectionContext();
     const setViewedSection = sectionContext.setViewedSection;
@@ -27,6 +27,7 @@ export default ({ sections }) => {
                 //push to viewed section if unique
                 setViewedSection((old) => {
                     if (!old.includes(section.id)) {
+                        stop();
                         play(section.description);
                         return [...old, section.id]
                     }
@@ -49,7 +50,7 @@ export default ({ sections }) => {
 
             //push to viewed artifact if unique
             setViewedArtifact((old) => {
-                if (!old.includes(artifactId) && has(artifactId, 'id')) {
+                if (!old.includes(artifactId)) {
                     return [...old, artifactId.id]
                 }
                 return old
@@ -81,19 +82,25 @@ export default ({ sections }) => {
                             material="color:#4e9f3d"
                             text={`value:View ${section.as}; align:center; width:3`}
                             onClick={() => {
+                                stop();
                                 setVisible({ ref: entityRef.current[section.id], id: section.id, artifact: section.artifact[0] });
                             }}>
                         </a-entity>
-                        <a-image class="clickable"
-                            text="value:Play Introduction; align:center; width:3"
-                            geometry="primitive:plane; width:1; height:0"
-                            material="color:#4e9f3d"
-                            position="0 -1 0"
-                            height="1"
-                            width="1"
-                            onClick={() => {
-                                play(section.description);
-                            }}>
+                        <a-image
+                            class="clickable"
+                            src="#play"
+                            position="-0.5 -1 0"
+                            height="0.3"
+                            width="0.3"
+                            onClick={() => play(section.description)}>
+                        </a-image>
+                        <a-image
+                            class="clickable"
+                            src="#stop"
+                            position="0.5 -1 0"
+                            height="0.3"
+                            width="0.3"
+                            onClick={() => pause()}>
                         </a-image>
                     </a-entity>
                     <Artifacts sectionID={section.id} artifactList={section.artifact} index={i} ref={artifactRef} />
